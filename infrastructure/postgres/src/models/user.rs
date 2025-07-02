@@ -1,8 +1,7 @@
 //! Represents an user in the system.
-use crate::vehicle::entities::vehicle::VehicleSummary;
 
-#[derive(Debug, Clone)]
-pub struct UserSummary {
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct User {
     /// The unique identifier for the user.
     pub id: String,
     /// Uuid of the user.
@@ -15,14 +14,4 @@ pub struct UserSummary {
     pub first_name: String,
     /// Last name of the user.
     pub last_name: String,
-}
-
-#[derive(Debug, Clone)]
-pub struct UserDriver {
-    /// The unique identifier for the driver.
-    pub id: String,
-    /// Uuid of the driver.
-    pub uuid: uuid::Uuid,
-    /// The vehicle assigned to the driver.
-    pub vehicle: Vec<VehicleSummary>,
 }

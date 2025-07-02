@@ -1,25 +1,6 @@
 /// Represents a vehicle in the system.
-use crate::vehicle::entities::vehicle_status::VehicleStatusSummary;
 
-#[derive(Debug, Clone)]
-pub struct VehicleSummary {
-    /// The unique identifier for the vehicle.
-    pub id: i32,
-    /// Uuid of the vehicle.
-    pub uuid: uuid::Uuid,
-    /// The make of the vehicle (e.g., Toyota, Ford).
-    pub make: String,
-    /// The model of the vehicle (e.g., Camry, Focus).
-    pub model: String,
-    /// The year the vehicle was manufactured.
-    pub year: u16,
-    /// The Vehicle Identification Number (VIN) of the vehicle.
-    pub vin: String,
-    /// License plate number of the vehicle.
-    pub license_plate: String,
-}
-
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Vehicle {
     /// The unique identifier for the vehicle.
     pub id: i32,
@@ -47,9 +28,6 @@ pub struct Vehicle {
     pub created_at: chrono::DateTime<chrono::Utc>,
     /// updated_at timestamp
     pub updated_at: chrono::DateTime<chrono::Utc>,
-
-    /// The latest status of the vehicle.
-    pub latest_status: Option<VehicleStatusSummary>,
 }
 
 /// Represents the method of maintenance tracking for a vehicle.
@@ -65,4 +43,10 @@ pub enum EngineType {
     Gasoline,
     Diesel,
     Electric,
+}
+
+impl Vehicle {
+    pub fn full_name(&self) -> String {
+        format!("{} {} ({})", self.make, self.model, self.year)
+    }
 }

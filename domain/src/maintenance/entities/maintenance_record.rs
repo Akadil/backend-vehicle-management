@@ -1,7 +1,7 @@
 //! Represents a log entry for a specific maintenance action taken on a vehicle.
 
 #[derive(Debug, Clone)]
-pub struct MaintenanceLog {
+pub struct MaintenanceRecord {
     /// The unique identifier for the maintenance log entry.
     pub id: i32,
     /// The unique identifier for the vehicle associated with this maintenance log.
