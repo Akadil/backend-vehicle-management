@@ -1,16 +1,17 @@
 //! Represents an user in the system.
-use crate::vehicle::entities::vehicle::VehicleSummary;
+use crate::user::value_types::{Email, UserId};
+use crate::vehicle::entities::vehicle::VehicleIdentity;
 
 #[derive(Debug, Clone)]
 pub struct UserSummary {
     /// The unique identifier for the user.
     pub id: String,
     /// Uuid of the user.
-    pub uuid: uuid::Uuid,
+    pub uuid: UserId,
     /// The username of the user.
     pub username: String,
     /// The email of the user.
-    pub email: String,
+    pub email: Email,
     /// First name of the user.
     pub first_name: String,
     /// Last name of the user.
@@ -24,5 +25,5 @@ pub struct UserDriver {
     /// Uuid of the driver.
     pub uuid: uuid::Uuid,
     /// The vehicle assigned to the driver.
-    pub vehicle: Vec<VehicleSummary>,
+    pub vehicle: Vec<VehicleIdentity>,
 }

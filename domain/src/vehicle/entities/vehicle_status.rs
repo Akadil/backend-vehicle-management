@@ -1,13 +1,13 @@
 //! Represents the status log of a vehicle in the system.
 use crate::user::entities::user::UserSummary;
-use crate::vehicle::entities::vehicle::VehicleSummary;
+use crate::vehicle::entities::vehicle::VehicleIdentity;
 
 #[derive(Debug, Clone)]
 pub struct VehicleStatus {
     /// The unique identifier for the vehicle status.
     pub id: i32,
     /// The unique identifier for the vehicle.
-    pub vehicle: VehicleSummary,
+    pub vehicle: VehicleIdentity,
     /// The unique identifier for the user who created this status.
     pub user: UserSummary,
     /// Odometer reading at the time of the status.

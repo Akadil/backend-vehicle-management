@@ -20,6 +20,13 @@ dependencies = [
 [[package]]
 name = "application"
 version = "0.1.0"
+dependencies = [
+ "domain",
+ "postgres",
+ "serde",
+ "thiserror",
+ "uuid",
+]
 
 [[package]]
 name = "autocfg"
