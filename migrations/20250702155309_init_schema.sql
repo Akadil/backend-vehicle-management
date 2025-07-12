@@ -74,12 +74,17 @@ CREATE TABLE maintenances (
 -- Maintenance Records (what was performed, when)
 CREATE TABLE maintenance_records (
     id SERIAL PRIMARY KEY,
+    -- Relationships
     vehicle_id UUID NOT NULL REFERENCES vehicles(uuid) ON DELETE CASCADE,
     maintenance_id INTEGER REFERENCES maintenances(id) ON DELETE CASCADE,
     performed_by UUID NOT NULL REFERENCES users(uuid) ON DELETE CASCADE,
     vehicle_status_id INTEGER NOT NULL REFERENCES vehicle_statuses(id) ON DELETE CASCADE,
+    -- Record details
     performed_at TIMESTAMPTZ NOT NULL,
     details TEXT NOT NULL,
+    -- Metadata
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    created_by UUID NOT NULL REFERENCES users(uuid) ON DELETE CASCADE,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by UUID NOT NULL REFERENCES users(uuid) ON DELETE CASCADE
 );

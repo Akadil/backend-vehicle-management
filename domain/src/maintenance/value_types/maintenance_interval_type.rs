@@ -25,16 +25,6 @@ impl MaintenanceIntervalType {
             _ => None,
         }
     }
-
-    /// Returns the interval type from a string representation, or returns an error if the string is invalid.
-    pub fn from_str_or_err(s: &str) -> Result<Self, String> {
-        match s {
-            "Kilometers" => Ok(MaintenanceIntervalType::Kilometers),
-            "Engine Hours" => Ok(MaintenanceIntervalType::EngineHours),
-            "Years" => Ok(MaintenanceIntervalType::Years),
-            _ => Err(format!("Invalid maintenance interval type: {}", s)),
-        }
-    }
 }
 
 impl std::fmt::Display for MaintenanceIntervalType {

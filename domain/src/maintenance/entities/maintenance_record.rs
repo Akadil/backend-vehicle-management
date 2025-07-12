@@ -1,14 +1,11 @@
 //! Represents a log entry for a specific maintenance action taken on a vehicle.
 //! *************************************** 100 chars limit ****************************************
-//!
-//! # General rules:
+//! # Business rules:
+//! * CRUD operations on maintenance records should be performed by users.
+//! 
+//! # Personal notes:
 //! * Maintenance is always associated with a vehicle, but not mandatorily with a maintenance type
-//!
-//! # Technical details:
 //! * Maintenance record has uuid because in the future it may be used in a distributed system
-//!
-//! Use case:
-//! 1. given a vehicle status log, check if the due date is soon
 //!
 //! TODO list:
 //! * Add validation rules for the details field (e.g., length, content)
@@ -40,10 +37,12 @@ pub struct MaintenanceRecordIdentity {
 
     /// The timestamp when the maintenance log entry was created.
     pub created_at: chrono::DateTime<chrono::Utc>,
+    /// The user who created the maintenance log entry.
+    pub created_by: uuid::Uuid,
     /// The timestamp when the maintenance log entry was last updated.
     pub updated_at: chrono::DateTime<chrono::Utc>,
-    // /// Attached files or images related to the maintenance action, if any.
-    // pub attachments: Vec<String>,
+    /// The user who last updated the maintenance log entry.
+    pub updated_by: uuid::Uuid,
 }
 
 /// Represents a hydrated version of a maintenance log entry.
@@ -94,15 +93,6 @@ impl MaintenanceRecord {
             vehicle_status,
         }
     }
-
-    // pub fn calculate_next_due_date(
-    //     &self,
-    //     vehicle: &VehicleIdentity,
-    // ) -> Option<chrono::DateTime<chrono::Utc>> {
-    //     // Assuming the maintenance type has a method to calculate the next due date
-    //     // This is a placeholder implementation
-    //     self.maintenance.calculate_next_due_date(self.identity.performed_at)
-    // }
 
     /* Getters */
     pub fn id(&self) -> uuid::Uuid {
