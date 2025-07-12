@@ -9,6 +9,7 @@ CREATE TABLE users (
     email TEXT NOT NULL UNIQUE,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
+    -- role UserRole NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -30,7 +31,7 @@ CREATE TABLE vehicles (
 CREATE TABLE vehicle_statuses (
     id SERIAL PRIMARY KEY,
     vehicle_id UUID NOT NULL REFERENCES vehicles(uuid) ON DELETE CASCADE,
-    user_id UUID NOT NULL REFERENCES users(uuid) ON DELETE CASCADE,
+    performed_by UUID NOT NULL REFERENCES users(uuid) ON DELETE CASCADE,
     odometer INTEGER,
     engine_hour_meter INTEGER,
     fuel_level INTEGER,

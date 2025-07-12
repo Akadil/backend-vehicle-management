@@ -2,14 +2,14 @@ use chrono::Datelike;
 
 /// Represents a vehicle in the system.
 use crate::vehicle::{
-    entities::vehicle_status::VehicleStatusSummary,
+    entities::vehicle_status::VehicleStatusIdentity,
     value_types::{engine_type, license_plate, vehicle_vin},
 };
 
 #[derive(Debug, Clone)]
 pub struct VehicleIdentity {
     /// id and Uuid of the vehicle.
-    pub uuid: uuid::Uuid,
+    pub id: uuid::Uuid,
     /// The make of the vehicle (e.g., Toyota, Ford).
     pub make: String,
     /// The model of the vehicle (e.g., Camry, Focus).
@@ -33,7 +33,7 @@ pub struct Vehicle {
     /// vehicle identity containing all the fields of the vehicle.
     pub identity: VehicleIdentity,
     /// The latest status of the vehicle.
-    pub latest_status: Option<VehicleStatusSummary>,
+    pub latest_status: Option<VehicleStatusIdentity>,
 }
 
 /// Represents a new vehicle to be created in the system.
@@ -92,7 +92,7 @@ impl NewVehicle {
 impl Vehicle {
     // access all fields of the vehicle with getters through the identity
     pub fn uuid(&self) -> &uuid::Uuid {
-        &self.identity.uuid
+        &self.identity.id
     }
     pub fn make(&self) -> &str {
         &self.identity.make

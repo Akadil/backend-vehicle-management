@@ -3,8 +3,7 @@ resolver = "2"
 members = ["application", "domain", "infrastructure/postgres"]
 
 [workspace.dependencies]
-uuid = { version = "1.6.1", features = ["v4"] }
+uuid = { version = "1.6.1", features = ["v4"] } # v4 is used for generating UUIDs
 chrono = { version = "0.4", features = ["serde"] }
 thiserror = "2.0.12"
 serde = { version = "1.0", features = ["derive"] }
-uuid = { version = "1.6.1", features = ["v4"] }

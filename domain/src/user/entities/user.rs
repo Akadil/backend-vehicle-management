@@ -3,9 +3,9 @@ use crate::user::value_types::{Email, UserId};
 use crate::vehicle::entities::vehicle::VehicleIdentity;
 
 #[derive(Debug, Clone)]
-pub struct UserSummary {
+pub struct UserIdentity {
     /// The unique identifier for the user.
-    pub id: String,
+    pub id: uuid::Uuid,
     /// Uuid of the user.
     pub uuid: UserId,
     /// The username of the user.
@@ -21,7 +21,7 @@ pub struct UserSummary {
 #[derive(Debug, Clone)]
 pub struct UserDriver {
     /// The unique identifier for the driver.
-    pub id: String,
+    pub id: uuid::Uuid,
     /// Uuid of the driver.
     pub uuid: uuid::Uuid,
     /// The vehicle assigned to the driver.
