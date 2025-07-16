@@ -23,8 +23,12 @@ CREATE TABLE vehicles (
     vin TEXT NOT NULL UNIQUE,
     license_plate TEXT NOT NULL UNIQUE,
     engine_type engine_type NOT NULL,
+
+    -- Timestamps and user tracking
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    created_by UUID NOT NULL REFERENCES users(uuid) ON DELETE SET NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by UUID NOT NULL REFERENCES users(uuid) ON DELETE SET NULL
 );
 
 -- Vehicle Statuses (Historical & Current)
@@ -49,10 +53,14 @@ WHERE latest = true;
 -- Maintenance Types (global definitions like "Oil Change", "Brake Check")
 CREATE TABLE maintenance_types (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
+    name TEXT NOT NULL UNIQUE,
     description TEXT NOT NULL,
+
+    -- Timestamps and user tracking
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    created_by UUID NOT NULL REFERENCES users(uuid) ON DELETE SET NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by UUID NOT NULL REFERENCES users(uuid) ON DELETE SET NULL
 );
 
 -- Maintenances (custom rules per vehicle & type)

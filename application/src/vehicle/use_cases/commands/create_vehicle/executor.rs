@@ -16,15 +16,6 @@ impl<'a, VR: VehicleRepository + 'a> CreateVehicleUseCase<'a, VR> {
         // Validate input data
         let vehicle: NewVehicle = data.try_into()?;
 
-        // Check if the vehicle already exists (if needed)
-        if self
-            .vehicle_repository
-            .exists_by_vin_or_license_plate(vehicle.vin.value(), vehicle.license_plate.value())
-            .await?
-        {
-            return Err(Error::VehicleAlreadyExists(vehicle.vin.value().to_string()));
-        }
-
         // Create the vehicle
         let vehicle = self.vehicle_repository.create(vehicle).await?;
 
