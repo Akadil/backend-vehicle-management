@@ -1,6 +1,10 @@
+use super::{
+    dto::{CreateVehicleCommand as Input, CreateVehicleResponse as Output},
+    error::CreateVehicleError as Error,
+};
 use domain::vehicle::{
-    entities::vehicle::{NewVehicle, VehicleError, VehicleIdentity},
-    repositories::vehicle_repository::{VehicleRepository, VehicleRepositoryError},
+    entities::vehicle::{NewVehicle, VehicleError},
+    repositories::vehicle_repository::VehicleRepository,
 };
 
 pub struct CreateVehicleUseCase<'a, VR: VehicleRepository + 'a> {
@@ -12,37 +16,19 @@ impl<'a, VR: VehicleRepository + 'a> CreateVehicleUseCase<'a, VR> {
         CreateVehicleUseCase { vehicle_repository }
     }
 
-    pub async fn execute(&self, data: CreateVehicleCmd) -> Result<VehicleIdentity, Error> {
+    pub async fn execute(&self, cmd: Input) -> Result<Output, Error> {
+        unimplemented!();
         // Validate input data
-        let vehicle: NewVehicle = data.try_into()?;
+        // let vehicle: NewVehicle = cmd.try_into()?;
 
         // Create the vehicle
-        let vehicle = self.vehicle_repository.create(vehicle).await?;
+        // let vehicle = self.vehicle_repository.create(vehicle).await?;
 
-        Ok(vehicle)
+        // Ok(vehicle)
     }
 }
 
-pub struct CreateVehicleCmd {
-    pub make: String,
-    pub model: String,
-    pub year: u16,
-    pub vin: String,
-    pub license_plate: String,
-    pub engine_type: String,
-}
-
-#[derive(Debug, thiserror::Error)]
-pub enum Error {
-    #[error("Invalid input: {0}")]
-    InvalidInput(#[from] VehicleError),
-    #[error("Vehicle already exists: {0}")]
-    VehicleAlreadyExists(String),
-    #[error("Repository error: {0}")]
-    RepositoryError(#[from] VehicleRepositoryError),
-}
-
-impl TryInto<NewVehicle> for CreateVehicleCmd {
+impl TryInto<NewVehicle> for Input {
     type Error = VehicleError;
 
     fn try_into(self) -> Result<NewVehicle, Self::Error> {

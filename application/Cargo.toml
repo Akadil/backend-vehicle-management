@@ -9,3 +9,4 @@ postgres = { path = "../infrastructure/postgres" }
 thiserror = { workspace = true }
 serde = { workspace = true }
 uuid = { workspace = true }
+chrono = { workspace = true }
