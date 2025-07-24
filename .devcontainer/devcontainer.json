@@ -1,0 +1,16 @@
+{
+  "name": "Rust Development",
+  "dockerFile": "Dockerfile",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer"
+      ],
+      "settings": {
+        "rust-analyzer.cargo.runBuildScripts": false
+      }
+    }
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/usr/src/app,type=bind,consistency=cached",
+  "workspaceFolder": "/usr/src/app"
+}
