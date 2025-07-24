@@ -1,5 +1,4 @@
 //! Represents a maintenance type in the system.
-<<<<<<< HEAD
 //!
 //! *************************************** 100 chars limit ****************************************
 //! # General rules:
@@ -7,17 +6,6 @@
 //!   Rotation).
 //!
 //! # Use cases:
-=======
-//! 
-//! Maintenance types are used to categorize different maintenance actions (e.g., Oil Change, Tire 
-//!   Rotation).
-//! 
-//! *************************************** 100 chars limit ****************************************
-//! # Personal notes:
-//! * 
-//! 
-//! # Business logic:
->>>>>>> 78a87e9cb86dea90d76570956f1bc7e35f224ca1
 //! 1. Show the list of available maintenance types in the system.
 //!
 use crate::user::entities::user::UserIdentity;

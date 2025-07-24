@@ -37,7 +37,6 @@ pub struct VehicleIdentity {
     pub updated_at: chrono::DateTime<chrono::Utc>,
 }
 
-<<<<<<< HEAD
 // #[derive(Debug, Clone)]
 // pub struct VehicleView {
 //     /// id and Uuid of the vehicle.
@@ -60,9 +59,6 @@ pub struct VehicleIdentity {
 //     pub updated_at: chrono::DateTime<chrono::Utc>,
 // }
 
-=======
-/// Represents a hydrated version of a vehicle.
->>>>>>> 78a87e9cb86dea90d76570956f1bc7e35f224ca1
 #[derive(Debug, Clone)]
 pub struct Vehicle {
     /// vehicle identity containing all the fields of the vehicle.
