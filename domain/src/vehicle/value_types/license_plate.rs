@@ -9,7 +9,10 @@ pub struct LicensePlate {
 }
 
 #[derive(Debug, thiserror::Error)]
-pub enum LicensePlateError {
+pub enum LicensePlateError {}
+
+#[derive(Debug, thiserror::Error)]
+pub enum LicensePlateValidationError {
     #[error("Invalid license plate format: {0}")]
     InvalidFormat(String),
     #[error("License plate cannot be empty")]
@@ -19,21 +22,20 @@ pub enum LicensePlateError {
 }
 
 impl LicensePlate {
-    /// Creates a new LicensePlate after validating the format
+    /// Creates a new LicensePlate without validation
     pub fn new(value: impl Into<String>) -> Result<Self, LicensePlateError> {
         let value = value.into().trim().to_uppercase();
-        Self::validate(&value)?;
         Ok(Self { value })
     }
 
     /// Validates Kazakhstan license plate format
-    fn validate(value: &str) -> Result<(), LicensePlateError> {
+    pub fn validate(value: &str) -> Result<(), LicensePlateValidationError> {
         if value.is_empty() {
-            return Err(LicensePlateError::Empty);
+            return Err(LicensePlateValidationError::Empty);
         }
 
         if value.len() > 8 {
-            return Err(LicensePlateError::TooLong);
+            return Err(LicensePlateValidationError::TooLong);
         }
 
         // Kazakhstan license plate formats:
@@ -42,7 +44,9 @@ impl LicensePlate {
         let is_valid = Self::is_standard_format(value) || Self::is_alternative_format(value);
 
         if !is_valid {
-            return Err(LicensePlateError::InvalidFormat(value.to_string()));
+            return Err(LicensePlateValidationError::InvalidFormat(
+                value.to_string(),
+            ));
         }
 
         Ok(())
@@ -113,12 +117,14 @@ mod tests {
     fn test_valid_standard_format() {
         let plate = LicensePlate::new("123ABC45").unwrap();
         assert_eq!(plate.value(), "123ABC45");
+        assert!(LicensePlate::validate("123ABC45").is_ok());
     }
 
     #[test]
     fn test_valid_alternative_format() {
         let plate = LicensePlate::new("A123BCD").unwrap();
         assert_eq!(plate.value(), "A123BCD");
+        assert!(LicensePlate::validate("A123BCD").is_ok());
     }
 
     #[test]
@@ -129,24 +135,24 @@ mod tests {
 
     #[test]
     fn test_invalid_format() {
-        assert!(LicensePlate::new("123456").is_err());
-        assert!(LicensePlate::new("ABCDEF").is_err());
-        assert!(LicensePlate::new("12ABC45").is_err());
+        assert!(LicensePlate::validate("123456").is_err());
+        assert!(LicensePlate::validate("ABCDEF").is_err());
+        assert!(LicensePlate::validate("12ABC45").is_err());
     }
 
     #[test]
     fn test_empty_license_plate() {
         assert!(matches!(
-            LicensePlate::new(""),
-            Err(LicensePlateError::Empty)
+            LicensePlate::validate(""),
+            Err(LicensePlateValidationError::Empty)
         ));
     }
 
     #[test]
     fn test_too_long() {
         assert!(matches!(
-            LicensePlate::new("123ABC456"),
-            Err(LicensePlateError::TooLong)
+            LicensePlate::validate("123ABC456"),
+            Err(LicensePlateValidationError::TooLong)
         ));
     }
 

@@ -9,7 +9,10 @@ pub struct VehicleVin {
 }
 
 #[derive(Debug, thiserror::Error)]
-pub enum VehicleVinError {
+pub enum VehicleVinError {}
+
+#[derive(Debug, thiserror::Error)]
+pub enum VehicleVinValidationError {
     #[error("Invalid VIN format: {0}")]
     InvalidFormat(String),
     #[error("VIN cannot be empty")]
@@ -26,18 +29,17 @@ impl VehicleVin {
     /// Creates a new VehicleVin after validating the format
     pub fn new(value: impl Into<String>) -> Result<Self, VehicleVinError> {
         let value = value.into().trim().to_uppercase();
-        Self::validate(&value)?;
         Ok(Self { value })
     }
 
     /// Validates VIN format and check digit
-    fn validate(value: &str) -> Result<(), VehicleVinError> {
+    pub fn validate(value: &str) -> Result<(), VehicleVinValidationError> {
         if value.is_empty() {
-            return Err(VehicleVinError::Empty);
+            return Err(VehicleVinValidationError::Empty);
         }
 
         if value.len() != 17 {
-            return Err(VehicleVinError::InvalidLength);
+            return Err(VehicleVinValidationError::InvalidLength);
         }
 
         // Check for valid characters (no I, O, Q allowed in VIN)
@@ -47,14 +49,16 @@ impl VehicleVin {
             .collect();
 
         if !invalid_chars.is_empty() {
-            return Err(VehicleVinError::InvalidCharacters(
+            return Err(VehicleVinValidationError::InvalidCharacters(
                 invalid_chars.iter().collect::<String>(),
             ));
         }
 
         // Validate check digit (9th position)
         if !Self::is_valid_check_digit(value) {
-            return Err(VehicleVinError::InvalidCheckDigit(value.to_string()));
+            return Err(VehicleVinValidationError::InvalidCheckDigit(
+                value.to_string(),
+            ));
         }
 
         Ok(())
@@ -171,6 +175,7 @@ mod tests {
     fn test_valid_vin() {
         let vin = VehicleVin::new("1HGBH41JXMN109186").unwrap();
         assert_eq!(vin.value(), "1HGBH41JXMN109186");
+        assert!(VehicleVin::validate("1HGBH41JXMN109186").is_ok());
     }
 
     #[test]
@@ -181,23 +186,20 @@ mod tests {
 
     #[test]
     fn test_invalid_length() {
-        assert!(matches!(
-            VehicleVin::new("1HGBH41JXMN10918"),
-            Err(VehicleVinError::InvalidLength)
-        ));
+        let result = VehicleVin::validate("1HGBH41JXMN10918");
+        assert!(matches!(result, Err(VehicleVinValidationError::InvalidLength)));
     }
 
     #[test]
     fn test_invalid_characters() {
-        assert!(matches!(
-            VehicleVin::new("1HGBH41JXMN109I86"),
-            Err(VehicleVinError::InvalidCharacters(_))
-        ));
+        let result = VehicleVin::validate("1HGBH41JXMN109I86");
+        assert!(matches!(result, Err(VehicleVinValidationError::InvalidCharacters(_))));
     }
 
     #[test]
     fn test_empty_vin() {
-        assert!(matches!(VehicleVin::new(""), Err(VehicleVinError::Empty)));
+        let result = VehicleVin::validate("");
+        assert!(matches!(result, Err(VehicleVinValidationError::Empty)));
     }
 
     #[test]
